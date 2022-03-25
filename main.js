@@ -28,7 +28,7 @@ function Task (text) {
   this.completed = false;
 }
 //Инициализация хранилища//
-if(localStorage) {
+if(localStorage.tasks) {
   tasks = JSON.parse(localStorage.getItem('keys'))  ;
 } else{
   tasks = []
