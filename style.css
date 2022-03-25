@@ -1,0 +1,80 @@
+body {
+    margin: 0 auto;
+    padding: 0;
+    background-color: bisque;
+}
+.container {
+    display: flex;
+    position: absolute;
+    width: 1000px;
+    margin: 80px auto;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgb(189, 184, 184);
+}
+.tasks {
+    width: 20%;
+    height: 100%;
+    border-right: 2px solid rgb(63, 62, 61);
+}
+.tasks h2 {
+    text-align: center;
+    margin: 15px 0px 20px 0px;
+}
+.btns {
+    display: flex;
+    flex-direction: column;
+}
+.button {
+    margin: 15px 0;
+    cursor: pointer;
+}
+.active {
+    background-color: rgb(80, 79, 78);
+    color: white;
+}
+.list-box {
+    width: 100%;
+}
+.list {
+    display: flex;
+    margin: 0 auto;
+    padding-top: 15px;
+    width: 80%;
+}
+.text-input {
+    width: 90%;
+    height: 20px;
+}
+.add-text {
+    height: 26px;
+    width: 8%;
+    margin: 0 auto;
+}
+.to-do {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding-top: 50px;
+    width: 100%;
+}
+.todoOne {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 0 auto;
+    width: 75%;
+    height: 80px;
+    background-color: aquamarine;
+}
+.text-task {
+    margin-left: 20px;
+}
+.btn-task {
+    margin-right: 20px;
+}
+.btn-task-del {
+    margin-right: 20px;
+}
