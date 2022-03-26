@@ -28,35 +28,25 @@ function Task (text) {
   this.completed = false;
 }
 //Инициализация хранилища//
-if(localStorage.tasks) {
-  tasks = JSON.parse(localStorage.getItem('keys'))  ;
-} else{
+if(!localStorage.tasks) {
   tasks = []
+} else{
+  tasks = JSON.parse(localStorage.getItem('key'));
 } 
 
 
-
 //запись в хранилище//
-const storage = () => {
-  localStorage.setItem('keys', JSON.stringify(tasks))
+const storage = (key, arr) => {
+  localStorage.setItem(`${key}`, JSON.stringify(arr.flat(Infinity)))
 };
-const storageCompleted = () => {
-  localStorage.setItem('comp', JSON.stringify(complTask))
-}
-const storageDel = () => {
-  localStorage.setItem('del', JSON.stringify(delTask))
-}
 
 
 btnText.addEventListener('click', () => {
   tasks.push(new Task(input.value));
-  storage()
-  createBlock()
+  storage('key', tasks)
+  createBlock(tasks, 'key')
   input.value = '';
 })
-
-
-
 
 //кнопки навигации//
 const navBtn = document.getElementById('btnTwo')
@@ -70,13 +60,14 @@ const complete = () => {
   for(let i = 0; i < btnCmp.length; i++) {
     btnCmp[i].addEventListener('click', function(){
       complTask.push(tasks.splice(i, 1))
-      storage()
-      storageCompleted()
-      createBlock()
+      storage('key', tasks)
+      storage('comp', complTask)
+      createBlock(tasks, 'key')
+      
     })
   }
 }
-complete()
+
 
 delTask = [];
 
@@ -85,81 +76,19 @@ const del = () => {
   for(let i = 0; i < btnDel.length; i++) {
     btnDel[i].addEventListener('click', function(){
       delTask.push(tasks.splice(i, 1))
-      storage()
-      storageDel()
-      createBlock()
+      storage('key', tasks)
+      storage('del', delTask)
+      createBlock(tasks, 'key')
     })
   }
 }
-del()
+
 //конструкторы шаблонов//
-const createBlockDel = () => {
+function createBlock (task, key) {
+ 
+  task = JSON.parse(localStorage.getItem(`${key}`))
   toDo.innerHTML = ''
-  delTask = JSON.parse(localStorage.getItem('del'))
-  delTask.map((el) => { el.map((e) => {
-    const div = document.createElement('div')
-    toDo.appendChild(div)
-    div.classList.add('todoOne')
-
-    const h2 = document.createElement('h2')
-    div.appendChild(h2)
-    h2.classList.add('text-task')
-    h2.innerHTML = e.text
-
-    const divBtn = document.createElement('div')
-    div.appendChild(divBtn)
-    /*
-    const btnComplete = document.createElement('button')
-    divBtn.appendChild(btnComplete)
-    btnComplete.classList.add('btn-task')
-    btnComplete.innerHTML = 'return'
-
-    const btnDel = document.createElement('button')
-    divBtn.appendChild(btnDel)
-    btnDel.classList.add('btn-task-del')
-    btnDel.innerHTML = 'del'
-    */
-    })
-    complete()
-  })
-}
-
-const createBlockComp = () => {
-  toDo.innerHTML = ''
-  complTask = JSON.parse(localStorage.getItem('comp'))
-  complTask.map((el) => { el.map((e) => {
-    const div = document.createElement('div')
-    toDo.appendChild(div)
-    div.classList.add('todoOne')
-
-    const h2 = document.createElement('h2')
-    div.appendChild(h2)
-    h2.classList.add('text-task')
-    h2.innerHTML = e.text
-
-    const divBtn = document.createElement('div')
-    div.appendChild(divBtn)
-    /*
-    const btnComplete = document.createElement('button')
-    divBtn.appendChild(btnComplete)
-    btnComplete.classList.add('btn-task')
-    btnComplete.innerHTML = 'return'
-
-    const btnDel = document.createElement('button')
-    divBtn.appendChild(btnDel)
-    btnDel.classList.add('btn-task-del')
-    btnDel.innerHTML = 'del'
-    */
-    })
-    complete()
-    del()  
-  })
-}
-
-
-const createBlock = () => {
-  toDo.innerHTML = ''
-  tasks.map((el) => {
+  task.map((el) => {
     const div = document.createElement('div')
     toDo.appendChild(div)
     div.classList.add('todoOne')
@@ -183,22 +112,25 @@ const createBlock = () => {
     btnDel.innerHTML = 'del'
   })
   complete()
-      del()
+  del()
 }
-createBlock();
+createBlock(tasks, 'key')
+
 
 
 //вызов событий на кнопках навигации//
 
 navBtn.addEventListener('click', () => {
-  createBlockComp()
+  createBlock(complTask, 'comp')
 })
 
 navBtnActiv.addEventListener('click', () =>{
-  createBlock ()
+  createBlock (tasks, 'key')
 }) 
 
-navBtnDel.addEventListener('click', createBlockDel)
+navBtnDel.addEventListener('click', () => {
+  createBlock(delTask, 'del')
+})
 
 
 
