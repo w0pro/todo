@@ -40,14 +40,6 @@ const storage = (key, arr) => {
   localStorage.setItem(`${key}`, JSON.stringify(arr.flat(Infinity)))
 };
 
-
-btnText.addEventListener('click', () => {
-  tasks.push(new Task(input.value));
-  storage('key', tasks)
-  createBlock(tasks, 'key')
-  input.value = '';
-})
-
 //кнопки навигации//
 const navBtn = document.getElementById('btnTwo')
 const navBtnActiv = document.getElementById('btnOne')
@@ -85,6 +77,19 @@ const del = () => {
 }
 del()
 
+
+btnText.addEventListener('click', () => {
+  tasks.push(new Task(input.value));
+  storage('key', tasks)
+  createBlock(tasks, 'key')
+
+complete()
+  del()
+
+  input.value = '';
+})
+
+
 //конструкторы шаблонов//
 function createBlock (task, key) {
  
@@ -113,8 +118,7 @@ function createBlock (task, key) {
     btnDel.classList.add('btn-task-del')
     btnDel.innerHTML = 'del'
   })
-  complete()
-  del()
+ 
 }
 createBlock(tasks, 'key')
 
@@ -124,14 +128,26 @@ createBlock(tasks, 'key')
 
 navBtn.addEventListener('click', () => {
   createBlock(complTask, 'comp')
+
+complete()
+  del()
+
 })
 
 navBtnActiv.addEventListener('click', () =>{
   createBlock (tasks, 'key')
+
+complete()
+  del()
+
 }) 
 
 navBtnDel.addEventListener('click', () => {
   createBlock(delTask, 'del')
+
+complete()
+  del()
+
 })
 
 
