@@ -32,7 +32,7 @@ body {
     cursor: pointer;
 }
 .active {
-    background-color: rgb(80, 79, 78);
+    background-color: rgba(80, 79, 78, 0.4);
     color: white;
 }
 .list-box {
@@ -47,11 +47,15 @@ body {
 .text-input {
     width: 90%;
     height: 20px;
+    border-radius: 30px;
 }
 .add-text {
     height: 26px;
     width: 8%;
     margin: 0 auto;
+    border-radius: 30px;
+    color: white;
+    background-color: dodgerblue;
 }
 .to-do {
     display: flex;
@@ -67,14 +71,20 @@ body {
     margin: 0 auto;
     width: 75%;
     height: 80px;
-    background-color: aquamarine;
+    background-color: rgb(61, 126, 104);
+    border: 3px dotted yellow;
+    color: white;
 }
 .text-task {
     margin-left: 20px;
 }
 .btn-task {
     margin-right: 20px;
+    border-radius: 20px;
 }
 .btn-task-del {
     margin-right: 20px;
+    border-radius: 20px;
+    background-color: rgb(209, 30, 30);
+    color: white;
 }

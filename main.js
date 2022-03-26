@@ -64,6 +64,7 @@ const complete = () => {
       storage('comp', complTask)
       createBlock(tasks, 'key')
       
+      
     })
   }
 }
@@ -82,6 +83,7 @@ const del = () => {
     })
   }
 }
+del()
 
 //конструкторы шаблонов//
 function createBlock (task, key) {
