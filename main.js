@@ -60,6 +60,7 @@ const complete = () => {
     })
   }
 }
+complete()
 
 
 delTask = [];
@@ -75,7 +76,7 @@ const del = () => {
     })
   }
 }
-
+del()
 
 
 btnText.addEventListener('click', () => {
@@ -83,8 +84,6 @@ btnText.addEventListener('click', () => {
   storage('key', tasks)
   createBlock(tasks, 'key')
 
-complete()
-  del()
 
   input.value = '';
 })
@@ -130,24 +129,18 @@ createBlock(tasks, 'key')
 navBtn.addEventListener('click', () => {
   createBlock(complTask, 'comp')
 
-complete()
-  del()
 
 })
 
 navBtnActiv.addEventListener('click', () =>{
   createBlock (tasks, 'key')
 
-complete()
-  del()
 
 }) 
 
 navBtnDel.addEventListener('click', () => {
   createBlock(delTask, 'del')
 
-complete()
-  del()
 
 })
 
