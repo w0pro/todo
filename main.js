@@ -46,7 +46,7 @@ const navBtnActiv = document.getElementById('btnOne')
 const navBtnDel = document.getElementById('btnThree')
 
 let complTask = [];
-
+/*
 //функция отвечает за перевод задания во вкладку завершенные//
 const complete = () => {
   for(let i = 0; i < btnCmp.length; i++) {
@@ -61,10 +61,10 @@ const complete = () => {
   }
 }
 complete()
-
+*/
 
 delTask = [];
-
+/*
 //Функция отвечает за перевод задания во вкладку удаленные//
 const del = () => {
   for(let i = 0; i < btnDel.length; i++) {
@@ -77,6 +77,28 @@ const del = () => {
   }
 }
 del()
+*/
+
+
+const complete = (i, task, key) => {
+ 
+      complTask.push(task.splice(i, 1))
+      storage(key, task)
+      storage('comp', complTask)
+      createBlock(task, key)
+    })
+  }
+}
+
+const del = (j, task, key) => {
+ 
+      delTask.push(task.splice(j, 1))
+      storage(key, task)
+      storage('del', delTask)
+      createBlock(task, key)
+    })
+  }
+}
 
 
 btnText.addEventListener('click', () => {
@@ -117,8 +139,21 @@ function createBlock (task, key) {
     btnDel.classList.add('btn-task-del')
     btnDel.innerHTML = 'del'
   })
- complete()
-  del()  
+ for(let i = 0; i < btnCmp.length; i++) {
+    btnCmp[i].addEventListener('click', function(){
+complete(btnCmp[i], task, key)
+})
+}
+
+
+
+for(let j = 0; j < btnDel.length; j++) {
+    btnDel[j].addEventListener('click', function(){
+del(btnDel[j], task, key)
+
+})
+}
+
 }
 createBlock(tasks, 'key')
 
