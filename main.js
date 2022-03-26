@@ -118,7 +118,8 @@ function createBlock (task, key) {
     btnDel.classList.add('btn-task-del')
     btnDel.innerHTML = 'del'
   })
- 
+ complete()
+  del()  
 }
 createBlock(tasks, 'key')
 
