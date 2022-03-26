@@ -75,7 +75,7 @@ const del = () => {
     })
   }
 }
-del()
+
 
 
 btnText.addEventListener('click', () => {
