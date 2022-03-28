@@ -28,7 +28,7 @@ function Task (text) {
   this.completed = false;
 }
 //Инициализация хранилища//
-if(!localStorage.tasks) {
+if(!localStorage) {
   tasks = []
 } else{
   tasks = JSON.parse(localStorage.getItem('key'));
@@ -40,83 +40,63 @@ const storage = (key, arr) => {
   localStorage.setItem(`${key}`, JSON.stringify(arr.flat(Infinity)))
 };
 
+
+btnText.addEventListener('click', () => {
+if(input.value === ''){
+  alert('добавь задачу!')
+}else{
+  tasks.push({text: input.value, id: Date.now(), status: 'active'});
+  storage('key', tasks)
+  createBlock(tasks, 'active')
+  input.value = '';
+}
+  
+})
+
 //кнопки навигации//
 const navBtn = document.getElementById('btnTwo')
 const navBtnActiv = document.getElementById('btnOne')
 const navBtnDel = document.getElementById('btnThree')
 
-let complTask = [];
-/*
+
 //функция отвечает за перевод задания во вкладку завершенные//
-const complete = () => {
-  for(let i = 0; i < btnCmp.length; i++) {
-    btnCmp[i].addEventListener('click', function(){
-      complTask.push(tasks.splice(i, 1))
+const complete = (idNum, sts) => {
+  tasks.forEach(el => {
+    if(el.id === idNum) {
+      el.status = 'completed'
+    }
+  });
       storage('key', tasks)
-      storage('comp', complTask)
-      createBlock(tasks, 'key')
-      
-      
-    })
-  }
+      createBlock(tasks, `${sts}`)
 }
-complete()
-*/
 
-delTask = [];
-/*
 //Функция отвечает за перевод задания во вкладку удаленные//
-const del = () => {
-  for(let i = 0; i < btnDel.length; i++) {
-    btnDel[i].addEventListener('click', function(){
-      delTask.push(tasks.splice(i, 1))
+const del = (idNum, sts) => {
+  tasks.forEach(el => {
+    if(el.id === idNum) {
+      el.status = 'deleted'
+    }
+  });
       storage('key', tasks)
-      storage('del', delTask)
-      createBlock(tasks, 'key')
-    })
-  }
-}
-del()
-*/
-
-
-const complete = (i, task, key) => {
- 
-      complTask.push(task.splice(i, 1))
-      storage(key, task)
-      storage('comp', complTask)
-      createBlock(task, key)
-    })
-  }
+      createBlock(tasks, `${sts}`)
 }
 
-const del = (j, task, key) => {
- 
-      delTask.push(task.splice(j, 1))
-      storage(key, task)
-      storage('del', delTask)
-      createBlock(task, key)
-    })
-  }
+const restore = (idNum, sts) => {
+  tasks.forEach(el => {
+    if(el.id === idNum) {
+      el.status = 'active'
+    }
+  });
+      storage('key', tasks)
+      createBlock(tasks, `${sts}`)
 }
-
-
-btnText.addEventListener('click', () => {
-  tasks.push(new Task(input.value));
-  storage('key', tasks)
-  createBlock(tasks, 'key')
-
-
-  input.value = '';
-})
-
 
 //конструкторы шаблонов//
-function createBlock (task, key) {
- 
-  task = JSON.parse(localStorage.getItem(`${key}`))
+function createBlock (task, sts) {
+
   toDo.innerHTML = ''
   task.map((el) => {
+    if(el.status === sts) {
     const div = document.createElement('div')
     toDo.appendChild(div)
     div.classList.add('todoOne')
@@ -128,55 +108,76 @@ function createBlock (task, key) {
 
     const divBtn = document.createElement('div')
     div.appendChild(divBtn)
-    
-    const btnComplete = document.createElement('button')
+
+    if(el.status === 'active') {
+      const btnComplete = document.createElement('button')
     divBtn.appendChild(btnComplete)
     btnComplete.classList.add('btn-task')
     btnComplete.innerHTML = 'complete'
+    btnComplete.addEventListener('click', (event) =>{
+      event.currentTarget
+      let idNum = el.id
+      let sts = el.status
+      complete(idNum, sts)
+    })
 
     const btnDel = document.createElement('button')
     divBtn.appendChild(btnDel)
     btnDel.classList.add('btn-task-del')
     btnDel.innerHTML = 'del'
+    btnDel.addEventListener('click', (event) =>{
+      event.currentTarget
+      let idNum = el.id
+      let sts = el.status
+      del(idNum, sts)
+    })
+    }else {
+      const btnComplete = document.createElement('button')
+    divBtn.appendChild(btnComplete)
+    btnComplete.classList.add('btn-task')
+    btnComplete.innerHTML = 'restore'
+    btnComplete.addEventListener('click', (event) =>{
+      event.currentTarget
+      let idNum = el.id
+      let sts = el.status
+      restore(idNum, sts)
+    })
+
+    const btnDel = document.createElement('button')
+    divBtn.appendChild(btnDel)
+    btnDel.classList.add('btn-task-del')
+    btnDel.innerHTML = 'del'
+    btnDel.addEventListener('click', (event) =>{
+      event.currentTarget
+      let idNum = el.id
+      let sts = el.status
+      del(idNum, sts)
+    })
+    }
+    
+    }
   })
- for(let i = 0; i < btnCmp.length; i++) {
-    btnCmp[i].addEventListener('click', function(){
-complete(btnCmp[i], task, key)
-})
-}
-
-
-
-for(let j = 0; j < btnDel.length; j++) {
-    btnDel[j].addEventListener('click', function(){
-del(btnDel[j], task, key)
-
-})
-}
 
 }
-createBlock(tasks, 'key')
+createBlock(tasks, 'active')
 
 
 
 //вызов событий на кнопках навигации//
 
 navBtn.addEventListener('click', () => {
-  createBlock(complTask, 'comp')
-
-
+  let arrComp = tasks.filter((el) => el.status === "completed")
+  createBlock(arrComp, 'completed')
 })
 
 navBtnActiv.addEventListener('click', () =>{
-  createBlock (tasks, 'key')
-
-
+  let arrActive = tasks.filter((el) => el.status === "active")
+  createBlock(arrActive, 'active')
 }) 
 
 navBtnDel.addEventListener('click', () => {
-  createBlock(delTask, 'del')
-
-
+  let arrDel = tasks.filter((el) => el.status === "deleted")
+  createBlock(arrDel, 'deleted')  
 })
 
 
