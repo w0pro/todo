@@ -1,4 +1,8 @@
 
+
+
+
+
 //Смена бэкграунда активных кнопок навигации//
 const button = document.getElementsByClassName('button');
 
