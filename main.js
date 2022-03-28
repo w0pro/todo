@@ -1,8 +1,4 @@
 
-
-
-
-
 //Смена бэкграунда активных кнопок навигации//
 const button = document.getElementsByClassName('button');
 
@@ -26,13 +22,9 @@ const btnDel = document.getElementsByClassName('btn-task-del')
 
 let tasks;
 
-//Функция конструктор//
-function Task (text) {
-  this.text = text;
-  this.completed = false;
-}
+
 //Инициализация хранилища//
-if(!localStorage.tasks) {
+if(!localStorage) {
   tasks = []
 } else{
   tasks = JSON.parse(localStorage.getItem('key'));
@@ -41,7 +33,7 @@ if(!localStorage.tasks) {
 
 //запись в хранилище//
 const storage = (key, arr) => {
-  localStorage.setItem(`${key}`, JSON.stringify(arr.flat(Infinity)))
+  localStorage.setItem(`${key}`, JSON.stringify(arr))
 };
 
 
@@ -172,23 +164,16 @@ createBlock(tasks, 'active')
 navBtn.addEventListener('click', () => {
   let arrComp = tasks.filter((el) => el.status === "completed")
   createBlock(arrComp, 'completed')
-  
-
 })
 
 navBtnActiv.addEventListener('click', () =>{
   let arrActive = tasks.filter((el) => el.status === "active")
   createBlock(arrActive, 'active')
-  
-
 }) 
 
 navBtnDel.addEventListener('click', () => {
   let arrDel = tasks.filter((el) => el.status === "deleted")
-  createBlock(arrDel, 'deleted')
- 
-
-  
+  createBlock(arrDel, 'deleted') 
 })
 
 
