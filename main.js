@@ -22,8 +22,10 @@ const btnDel = document.getElementsByClassName('btn-task-del')
 
 let tasks = JSON.parse(localStorage.getItem('key'))|| []
 
+let currentStatus = 'active'
 
 //Инициализация хранилища//
+
 
 
 
@@ -52,43 +54,23 @@ const navBtnDel = document.getElementById('btnThree')
 
 
 //функция отвечает за перевод задания во вкладку завершенные//
-const complete = (idNum, sts) => {
+const changeStatus = (idNum, status) => {
   tasks.forEach(el => {
     if(el.id === idNum) {
-      el.status = 'completed'
+      el.status = status
     }
   });
       storage('key', tasks)
-      createBlock(tasks, `${sts}`)
+      createBlock(tasks)
 }
 
-//Функция отвечает за перевод задания во вкладку удаленные//
-const del = (idNum, sts) => {
-  tasks.forEach(el => {
-    if(el.id === idNum) {
-      el.status = 'deleted'
-    }
-  });
-      storage('key', tasks)
-      createBlock(tasks, `${sts}`)
-}
-
-const restore = (idNum, sts) => {
-  tasks.forEach(el => {
-    if(el.id === idNum) {
-      el.status = 'active'
-    }
-  });
-      storage('key', tasks)
-      createBlock(tasks, `${sts}`)
-}
 
 //конструкторы шаблонов//
-function createBlock (task, sts) {
+function createBlock (task) {
 
   toDo.innerHTML = ''
   task.map((el) => {
-    if(el.status === sts) {
+    if(el.status === currentStatus) {
     const div = document.createElement('div')
     toDo.appendChild(div)
     div.classList.add('todoOne')
@@ -110,7 +92,7 @@ function createBlock (task, sts) {
       event.currentTarget
       let idNum = el.id
       let sts = el.status
-      complete(idNum, sts)
+      changeStatus(idNum, 'completed')
     })
 
     const btnDel = document.createElement('button')
@@ -121,7 +103,7 @@ function createBlock (task, sts) {
       event.currentTarget
       let idNum = el.id
       let sts = el.status
-      del(idNum, sts)
+      changeStatus(idNum, 'deleted')
     })
     }else {
       const btnComplete = document.createElement('button')
@@ -132,7 +114,7 @@ function createBlock (task, sts) {
       event.currentTarget
       let idNum = el.id
       let sts = el.status
-      restore(idNum, sts)
+      changeStatus(idNum, 'active')
     })
 
     const btnDel = document.createElement('button')
@@ -143,7 +125,7 @@ function createBlock (task, sts) {
       event.currentTarget
       let idNum = el.id
       let sts = el.status
-      del(idNum, sts)
+      changeStatus(idNum, 'deleted')
     })
     }
     
@@ -151,7 +133,7 @@ function createBlock (task, sts) {
   })
 
 }
-createBlock(tasks, 'active')
+createBlock(tasks)
 
 
 
@@ -159,17 +141,20 @@ createBlock(tasks, 'active')
 
 navBtn.addEventListener('click', () => {
   let arrComp = tasks.filter((el) => el.status === "completed")
-  createBlock(arrComp, 'completed')
+  currentStatus = 'completed'
+  createBlock(arrComp)
 })
 
 navBtnActiv.addEventListener('click', () =>{
   let arrActive = tasks.filter((el) => el.status === "active")
-  createBlock(arrActive, 'active')
+  currentStatus = 'active'
+  createBlock(arrActive)
 }) 
 
 navBtnDel.addEventListener('click', () => {
   let arrDel = tasks.filter((el) => el.status === "deleted")
-  createBlock(arrDel, 'deleted') 
+  currentStatus = 'deleted'
+  createBlock(arrDel) 
 })
 
 
