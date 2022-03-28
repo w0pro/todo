@@ -10,24 +10,14 @@ for(let i = 0; i < button.length; i++) {
   });
 }
 
-const input = document.querySelector('.text-input')
-const btnText = document.querySelector('.add-text')
-const toDo = document.querySelector('.to-do')
-
-//кнопки взаимодействия//
-const btnCmp = document.getElementsByClassName('btn-task')
-const btnDel = document.getElementsByClassName('btn-task-del')
-
+const input = document.querySelector('.text-input');
+const btnText = document.querySelector('.add-text');
+const toDo = document.querySelector('.to-do');
 
 
 let tasks = JSON.parse(localStorage.getItem('key'))|| []
 
 let currentStatus = 'active'
-
-//Инициализация хранилища//
-
-
-
 
 //запись в хранилище//
 const storage = (key, arr) => {
@@ -49,7 +39,7 @@ if(input.value === ''){
 
 //кнопки навигации//
 const navBtn = document.getElementById('btnTwo')
-const navBtnActiv = document.getElementById('btnOne')
+const navBtnActive = document.getElementById('btnOne')
 const navBtnDel = document.getElementById('btnThree')
 
 
@@ -91,7 +81,6 @@ function createBlock (task) {
     btnComplete.addEventListener('click', (event) =>{
       event.currentTarget
       let idNum = el.id
-      let sts = el.status
       changeStatus(idNum, 'completed')
     })
 
@@ -102,7 +91,6 @@ function createBlock (task) {
     btnDel.addEventListener('click', (event) =>{
       event.currentTarget
       let idNum = el.id
-      let sts = el.status
       changeStatus(idNum, 'deleted')
     })
     }else {
@@ -113,7 +101,6 @@ function createBlock (task) {
     btnComplete.addEventListener('click', (event) =>{
       event.currentTarget
       let idNum = el.id
-      let sts = el.status
       changeStatus(idNum, 'active')
     })
 
@@ -124,7 +111,6 @@ function createBlock (task) {
     btnDel.addEventListener('click', (event) =>{
       event.currentTarget
       let idNum = el.id
-      let sts = el.status
       changeStatus(idNum, 'deleted')
     })
     }
@@ -145,7 +131,7 @@ navBtn.addEventListener('click', () => {
   createBlock(arrComp)
 })
 
-navBtnActiv.addEventListener('click', () =>{
+navBtnActive.addEventListener('click', () =>{
   let arrActive = tasks.filter((el) => el.status === "active")
   currentStatus = 'active'
   createBlock(arrActive)
