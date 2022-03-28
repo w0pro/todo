@@ -168,16 +168,23 @@ createBlock(tasks, 'active')
 navBtn.addEventListener('click', () => {
   let arrComp = tasks.filter((el) => el.status === "completed")
   createBlock(arrComp, 'completed')
+  
+
 })
 
 navBtnActiv.addEventListener('click', () =>{
   let arrActive = tasks.filter((el) => el.status === "active")
   createBlock(arrActive, 'active')
+  
+
 }) 
 
 navBtnDel.addEventListener('click', () => {
   let arrDel = tasks.filter((el) => el.status === "deleted")
-  createBlock(arrDel, 'deleted')  
+  createBlock(arrDel, 'deleted')
+ 
+
+  
 })
 
 
