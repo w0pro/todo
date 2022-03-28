@@ -20,15 +20,11 @@ const btnDel = document.getElementsByClassName('btn-task-del')
 
 
 
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem('key'))|| []
 
 
 //Инициализация хранилища//
-if(!localStorage) {
-  tasks = []
-} else{
-  tasks = JSON.parse(localStorage.getItem('key'));
-} 
+
 
 
 //запись в хранилище//
