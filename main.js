@@ -20,7 +20,7 @@ const btnDel = document.getElementsByClassName('btn-task-del')
 
 
 
-let tasks;
+let tasks = [];
 
 
 //Инициализация хранилища//
