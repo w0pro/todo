@@ -1,9 +1,8 @@
-
 //Смена бэкграунда активных кнопок навигации//
-const button = document.getElementsByClassName('button');
+const buttons = document.getElementsByClassName('button');
 
-for(let i = 0; i < button.length; i++) {
-  button[i].addEventListener('click', function(){
+for(let i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener('click', function(){
     const current = document.getElementsByClassName("active");
     current[0].className = current[0].className.replace(" active", "");
     this.className += " active";
@@ -16,25 +15,34 @@ const toDo = document.querySelector('.to-do');
 
 
 let tasks = JSON.parse(localStorage.getItem('key'))|| []
-
 let currentStatus = 'active'
 
+
 //запись в хранилище//
-const storage = (key, arr) => {
-  localStorage.setItem(`${key}`, JSON.stringify(arr))
+const storage = () => {
+  localStorage.setItem('key', JSON.stringify(tasks))
 };
+
+function delTrash () {
+  tasks.forEach((el, index) => {
+    if(el.status === 'trash') {
+      tasks.splice(index, 1)
+    }
+  })
+  storage()
+}
+delTrash()
 
 
 btnText.addEventListener('click', () => {
-if(input.value === ''){
+if(input.value.trim() === ''){
   alert('добавь задачу!')
 }else{
-  tasks.push({text: input.value, id: Date.now(), status: 'active'});
-  storage('key', tasks)
-  createBlock(tasks, 'active')
+  tasks.unshift({text: input.value, id: Date.now(), status: 'active'});
+  storage()
+  createBlock(tasks)
   input.value = '';
 }
-  
 })
 
 //кнопки навигации//
@@ -43,21 +51,30 @@ const navBtnActive = document.getElementById('btnOne')
 const navBtnDel = document.getElementById('btnThree')
 
 
-//функция отвечает за перевод задания во вкладку завершенные//
+//функция отвечает за перевод задания во вкладки//
 const changeStatus = (idNum, status) => {
   tasks.forEach(el => {
     if(el.id === idNum) {
       el.status = status
     }
   });
-      storage('key', tasks)
+      storage()
       createBlock(tasks)
 }
 
-
+function createButton (arg1, arg2, arg3, arg4, arg5) {
+  const btnDel = document.createElement('button')
+  arg1.appendChild(btnDel)
+  btnDel.classList.add(arg2)
+  btnDel.innerHTML = arg3
+  btnDel.addEventListener('click', (event) => {
+    event.currentTarget
+    let idNum = arg4.id
+    changeStatus(idNum, arg5)
+  })
+}
 //конструкторы шаблонов//
 function createBlock (task) {
-
   toDo.innerHTML = ''
   task.map((el) => {
     if(el.status === currentStatus) {
@@ -74,54 +91,19 @@ function createBlock (task) {
     div.appendChild(divBtn)
 
     if(el.status === 'active') {
-      const btnComplete = document.createElement('button')
-    divBtn.appendChild(btnComplete)
-    btnComplete.classList.add('btn-task')
-    btnComplete.innerHTML = 'complete'
-    btnComplete.addEventListener('click', (event) =>{
-      event.currentTarget
-      let idNum = el.id
-      changeStatus(idNum, 'completed')
-    })
-
-    const btnDel = document.createElement('button')
-    divBtn.appendChild(btnDel)
-    btnDel.classList.add('btn-task-del')
-    btnDel.innerHTML = 'del'
-    btnDel.addEventListener('click', (event) =>{
-      event.currentTarget
-      let idNum = el.id
-      changeStatus(idNum, 'deleted')
-    })
-    }else {
-      const btnComplete = document.createElement('button')
-    divBtn.appendChild(btnComplete)
-    btnComplete.classList.add('btn-task')
-    btnComplete.innerHTML = 'restore'
-    btnComplete.addEventListener('click', (event) =>{
-      event.currentTarget
-      let idNum = el.id
-      changeStatus(idNum, 'active')
-    })
-
-    const btnDel = document.createElement('button')
-    divBtn.appendChild(btnDel)
-    btnDel.classList.add('btn-task-del')
-    btnDel.innerHTML = 'del'
-    btnDel.addEventListener('click', (event) =>{
-      event.currentTarget
-      let idNum = el.id
-      changeStatus(idNum, 'deleted')
-    })
+      createButton(divBtn, 'btn-task', 'завершить', el, 'completed' )
+      createButton(divBtn, 'btn-task-del', 'удалить', el, 'deleted' )
+    }else if(el.status === 'completed'){
+      createButton(divBtn, 'btn-task', 'восстановить', el, 'active' )
+      createButton(divBtn, 'btn-task-del', 'удалить', el, 'deleted' )
+    }else{
+      createButton(divBtn, 'btn-task', 'восстановить', el, 'active' )
+      createButton(divBtn, 'btn-task-del', 'удалить совсем', el, 'trash' )
     }
-    
     }
-  })
-
-}
-createBlock(tasks)
-
-
+    })
+  }
+  createBlock(tasks)
 
 //вызов событий на кнопках навигации//
 
@@ -135,12 +117,12 @@ navBtnActive.addEventListener('click', () =>{
   let arrActive = tasks.filter((el) => el.status === "active")
   currentStatus = 'active'
   createBlock(arrActive)
-}) 
+})
 
 navBtnDel.addEventListener('click', () => {
   let arrDel = tasks.filter((el) => el.status === "deleted")
   currentStatus = 'deleted'
-  createBlock(arrDel) 
+  createBlock(arrDel)
 })
 
 
