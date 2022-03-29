@@ -26,7 +26,7 @@ const storage = () => {
 function delTrash () {
   tasks.forEach((el, index) => {
     if(el.status === 'trash') {
-      tasks.splice(index, 1)
+       tasks.splice(index, 1)
     }
   })
   storage()
@@ -67,8 +67,8 @@ function createButton (arg1, arg2, arg3, arg4, arg5) {
   arg1.appendChild(btnDel)
   btnDel.classList.add(arg2)
   btnDel.innerHTML = arg3
-  btnDel.addEventListener('click', (event) => {
-    event.currentTarget
+  btnDel.addEventListener('click', () => {
+
     let idNum = arg4.id
     changeStatus(idNum, arg5)
   })
